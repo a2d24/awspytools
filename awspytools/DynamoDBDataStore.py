@@ -170,7 +170,7 @@ class DynamoDBDataStore(object):
         paginator = self.client.get_paginator(paginator_type)
         return paginator.paginate(**parameters)
 
-    def update_document(self, index=None, parameters=None, return_attributes=False, return_index=False):
+    def update_document(self, index=None, parameters=None, return_value: ReturnValues=ReturnValues.NONE, return_index=False):
 
         if parameters is None:
             parameters = {}
@@ -189,8 +189,8 @@ class DynamoDBDataStore(object):
             'Key': key,
             **parameters
         }
-        if return_attributes:
-            params["ReturnValues"] = return_attributes.value
+        if return_value != ReturnValues.NONE:
+            params["ReturnValues"] = return_value.value
 
         try:
             item = self.client.update_item(**params).get("Attributes")
