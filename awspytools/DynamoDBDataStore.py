@@ -37,7 +37,12 @@ class DynamoDBDataStore(object):
     serializer = TypeSerializer()
     deserializer = TypeDeserializer()
 
-    def __init__(self, table_name, hash_key='PK', sort_key='SK', use_default_index_keys=True, endpoint_url=None):
+    def __init__(self, table_name,
+                 hash_key='PK',
+                 sort_key='SK',
+                 use_default_index_keys=True,
+                 client=None,
+                 endpoint_url=None):
 
         DB_SETTINGS = {
             'TableName': table_name,
@@ -60,7 +65,10 @@ class DynamoDBDataStore(object):
                 'GSI2SK',
             ])
 
-        self.client = boto3.client('dynamodb', endpoint_url=endpoint_url)
+        if client:
+            self.client = client
+        else:
+            self.client = boto3.client('dynamodb', endpoint_url=endpoint_url)
 
     def add_index_keys(self, keys_to_add: list):
         if type(keys_to_add) != list:
@@ -170,7 +178,8 @@ class DynamoDBDataStore(object):
         paginator = self.client.get_paginator(paginator_type)
         return paginator.paginate(**parameters)
 
-    def update_document(self, index=None, parameters=None, return_value: ReturnValues=ReturnValues.NONE, return_index=False):
+    def update_document(self, index=None, parameters=None, return_value: ReturnValues = ReturnValues.NONE,
+                        return_index=False):
 
         if parameters is None:
             parameters = {}
