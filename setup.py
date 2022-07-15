@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="awspytools",
-    version="0.1.0",
+    version="0.1.1",
     author="Yusuff Lockhat",
     author_email="awspytools@a2d24.com",
     description="A collection of tools to try and make AWS boto3 more pythonic",
