@@ -41,8 +41,8 @@ class DynamoDBDataStore(object):
                  hash_key='PK',
                  sort_key='SK',
                  use_default_index_keys=True,
-                 client=None,
-                 endpoint_url=None):
+                 endpoint_url=None,
+                 client=None):
 
         DB_SETTINGS = {
             'TableName': table_name,
